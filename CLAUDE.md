@@ -70,10 +70,13 @@ The Hytale API is young, changes between Early Access updates, and is not well r
 - **(2026-10-22)** The palette entry `#FF1399` is named "purple" (owner's choice), although it looks pink.
 - **(2026-10-22)** Players choose colors from the map UI, using the same palette the vanilla placeable map markers offer. Built as context menu entries on player markers.
 
+### Status (as of 2026-10-22): feature complete, version 1.0.0 (tag `v1.0.0`)
+
+Everything above confirmed in game by the owner: tint on map and compass (incl. above/below icons), right-click menu, palette, saving across restarts. Online-only targets are fine (decided). The 1.0.0 jar went to the owner's real server.
+
 ## Open design questions (ask the owner)
 
-- Choosing colors for offline players (the command only accepts online players; the map only shows online ones anyway)?
-- Anything else for the compass/map (the project goal is broader than colors)?
+- Anything else for the compass/map (the original goal was broader than colors)?
 
 ## Features
 

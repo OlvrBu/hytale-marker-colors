@@ -1,7 +1,7 @@
 {
     "Group": "obut",
     "Name": "markercolors",
-    "Version": "0.1.0",
+    "Version": "1.0.0",
     "Description": "Choose the compass and map marker color of other players",
     "Authors": [
         {

@@ -16,7 +16,7 @@ public final class MarkerColorParser {
 
     static {
         NAMED.put("white", 0xFFFFFF);
-        NAMED.put("pink", 0xFF1399);
+        NAMED.put("purple", 0xFF1399); // looks pink, but the owner prefers this name
         NAMED.put("orange", 0xFF7512);
         NAMED.put("yellow", 0xECE133);
         NAMED.put("green", 0x00F482);

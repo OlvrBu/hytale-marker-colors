@@ -13,3 +13,6 @@ run/
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+# Saved colors written by the dev server (its plugin data dir is src/main/resources)
+src/main/resources/marker_colors.json*

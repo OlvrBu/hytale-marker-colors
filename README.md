@@ -11,11 +11,12 @@ Right-click another player's marker on the world map and pick a color (the same 
 map markers), or "Default". The color shows on the map and on the compass. Or use the command:
 
 ```
-/markercolor <player> <color>   # color: white, pink, orange, yellow, green, blue, or #RRGGBB
+/markercolor <player> <color>   # color: white, purple, orange, yellow, green, blue, or #RRGGBB
 /markercolor <player> reset
 ```
 
-Colors are personal: only you see the colors you choose. They are not saved across server restarts yet.
+Colors are personal: only you see the colors you choose. They are saved in `marker_colors.json` in the
+plugin's data folder and survive server restarts.
 
 ## Development
 

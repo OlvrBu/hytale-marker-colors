@@ -18,6 +18,10 @@ public class MarkerColorsPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
+        MarkerColorFile file = new MarkerColorFile(getDataDirectory(), getLogger());
+        file.load(colors);
+        colors.setOnChange(() -> file.save(colors));
+
         ColoredPlayersMarkerProvider provider = new ColoredPlayersMarkerProvider(colors, dummy);
         // Each world registers the vanilla provider in its WorldMapManager constructor; replace it under the
         // same key when the world is added (built-in plugins add their own providers on this event too).

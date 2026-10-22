@@ -51,13 +51,14 @@ The Hytale API is young, changes between Early Access updates, and is not well r
 - `MapMarkerTracker` resends a marker when its name, image, icon size, compass image or components change (components compared with `Arrays.equals`; `TintComponent`/`Color` implement `equals`), so a color change shows up on the next update.
 - **Confirmed in game 2026-10-22:** the `TintComponent` colors the player marker on both the map and the compass, including the above/below icons. No recolored icons needed.
 - A `MapMarker` can carry `ContextMenuItem(name, command)` entries. The server itself never uses them. **Confirmed in game 2026-10-22:** they show on right-click on the map; clicking runs the command as the viewer and shows its chat feedback. The command must have **no leading `/`** (the variant with a slash did not work for the owner). The map UI itself is client-side and not in the assets; context menu items are the only server-side hook into it found so far.
-- The user-marker color palette is client-side too (not in assets or server code). A chosen color arrives as `CreateUserMarker.tintColor` and is saved as `ColorTint` on the marker (personal markers: in `universe/players/<uuid>.json`; shared: world resource `SharedUserMapMarkers`). Read on 2026-10-22 from markers the owner placed in all colors (6), ordered by placement position: white `#FFFFFF`, pink `#FF1399`, orange `#FF7512`, yellow `#ECE133`, green `#00F482`, blue `#1880FF`. **Names are ours, not the game's.**
+- The user-marker color palette is client-side too (not in assets or server code). A chosen color arrives as `CreateUserMarker.tintColor` and is saved as `ColorTint` on the marker (personal markers: in `universe/players/<uuid>.json`; shared: world resource `SharedUserMapMarkers`). Read on 2026-10-22 from markers the owner placed in all colors (6), ordered by placement position: white `#FFFFFF`, pink `#FF1399` (we call it "purple", owner's choice), orange `#FF7512`, yellow `#ECE133`, green `#00F482`, blue `#1880FF`. **Names are ours, not the game's.**
 - Icons: `Common/UI/WorldMap/MapMarkers/` in the assets zip (`~/.gradle/caches/hytale-assets/release-0.7.2-Assets.zip`).
 
 ## Current implementation (2026-10-22)
 
 - `ColoredPlayersMarkerProvider`: copy of vanilla `OtherPlayersMarkerProvider` plus a `TintComponent` when the viewer chose a color. Registered under `"playerIcons"` on `AddWorldEvent` (the way built-in plugins add providers). **Re-sync with vanilla after game updates.**
-- `MarkerColorStore`: viewer UUID → target UUID → 0xRRGGBB, in memory only (lost on restart).
+- `MarkerColorStore`: viewer UUID → target UUID → 0xRRGGBB, in memory; notifies a listener on every change.
+- Saving (2026-10-22): `MarkerColorFile` writes all colors to `marker_colors.json` in the plugin data folder after every change (temp file + atomic move) and loads it in `setup()`. Format (`MarkerColorJson`, unit-tested): `{ "viewer-uuid": { "target-uuid": "#RRGGBB" } }`; colors are stored as hex, never names, so renaming palette entries can't break saved files. Malformed entries are skipped with a warning; an unreadable file is moved to `marker_colors.json.broken-<millis>` and the plugin starts empty. On the dev server the file lands in `src/main/resources` (gitignored, excluded from the jar).
 - Right-click menu on every other-player marker on the map: "Color: White" … "Color: Blue" (the vanilla palette) and "Color: Default"; each runs `/markercolor <name> <color>`.
 - `/markercolor <player> <color|reset>`: color is a palette name (`MarkerColorParser.NAMED`) or any `#RRGGBB`. Open to all players (`hytale:Adventurer`, the default group, like vanilla `/emote`). The target must be online.
 - `MarkerColorParser`: game-independent, unit-tested.
@@ -65,11 +66,13 @@ The Hytale API is young, changes between Early Access updates, and is not well r
 
 ## Decided
 
+- **(2026-10-22)** Colors are saved across restarts, in one plugin file (not on the player entity).
+- **(2026-10-22)** The palette entry `#FF1399` is named "purple" (owner's choice), although it looks pink.
 - **(2026-10-22)** Players choose colors from the map UI, using the same palette the vanilla placeable map markers offer. Built as context menu entries on player markers.
 
 ## Open design questions (ask the owner)
 
-- Persistence: per player across restarts (where: plugin config file vs. player component)? Choosing colors for offline players?
+- Choosing colors for offline players (the command only accepts online players; the map only shows online ones anyway)?
 - Anything else for the compass/map (the project goal is broader than colors)?
 
 ## Features

@@ -59,6 +59,11 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+// The dev server's plugin data dir is src/main/resources; keep the saved colors out of the jar.
+tasks.processResources {
+    exclude("marker_colors.json*")
+}
+
 tasks.test {
     useJUnitPlatform()
 }

@@ -35,14 +35,36 @@ hytaleTools {
     injectServerJavadocsIntoSources = property("injectServerJavadocsIntoSources").toString().toBoolean()
     generateAssetsBinary = property("generateAssetsBinary").toString().toBoolean()
     // hytaleHomeOverride = property("hytaleHomeOverride").toString()
+
+    // Dev server only (runServer): "--allow-op" enables /op self so you can grant yourself admin.
+    // Never use this flag on a public server.
+    serverArgs.addAll("--allow-op")
+    // The plugin's default -Xms4G -Xmx4G got the dev server OOM-killed in the 7.6 GB sandbox while
+    // Gradle was also running. 2.5 GB is plenty for a small dev world; later -X flags win.
+    serverJvmArgs.addAll("-Xms1G", "-Xmx2560m")
 }
 
 repositories {
     mavenCentral()
 }
 
+// Unit tests run without a server; give them the compile-only server jar too.
+configurations.testImplementation {
+    extendsFrom(configurations.compileOnly.get())
+}
+
+dependencies {
+    testImplementation(platform("org.junit:junit-bom:6.1.3"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
 tasks.named<Jar>("jar") {
-    archiveBaseName.set(project.property("mod_name").toString())
+    archiveBaseName.set(project.property("mod_id").toString())
     archiveVersion.set(project.property("version").toString())
 }
 

@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 public class MarkerColorsPlugin extends JavaPlugin {
 
     private final MarkerColorStore colors = new MarkerColorStore();
+    private final DummyPlayer dummy = new DummyPlayer();
 
     public MarkerColorsPlugin(@Nonnull JavaPluginInit init) {
         super(init);
@@ -17,7 +18,7 @@ public class MarkerColorsPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
-        ColoredPlayersMarkerProvider provider = new ColoredPlayersMarkerProvider(colors);
+        ColoredPlayersMarkerProvider provider = new ColoredPlayersMarkerProvider(colors, dummy);
         // Each world registers the vanilla provider in its WorldMapManager constructor; replace it under the
         // same key when the world is added (built-in plugins add their own providers on this event too).
         getEventRegistry().registerGlobal(AddWorldEvent.class, event -> {
@@ -25,5 +26,6 @@ public class MarkerColorsPlugin extends JavaPlugin {
             getLogger().atInfo().log("[MarkerColors] Replaced player marker provider in world %s", event.getWorld().getName());
         });
         getCommandRegistry().registerCommand(new MarkerColorCommand(colors));
+        getCommandRegistry().registerCommand(new MarkerDummyCommand(dummy));
     }
 }

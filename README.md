@@ -7,8 +7,11 @@ markers. Work in progress.
 
 ## Usage
 
+Right-click another player's marker on the world map and pick a color (the same palette as placeable
+map markers), or "Default". The color shows on the map and on the compass. Or use the command:
+
 ```
-/markercolor <player> <color>   # color: red, orange, yellow, green, cyan, blue, purple, pink, white, black, or #RRGGBB
+/markercolor <player> <color>   # color: white, pink, orange, yellow, green, blue, or #RRGGBB
 /markercolor <player> reset
 ```
 

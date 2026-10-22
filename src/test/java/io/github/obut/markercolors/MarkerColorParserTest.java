@@ -10,8 +10,8 @@ class MarkerColorParserTest {
 
     @Test
     void parsesNamesAndHex() {
-        assertEquals(OptionalInt.of(0x40E040), MarkerColorParser.parse("green"));
-        assertEquals(OptionalInt.of(0x40E040), MarkerColorParser.parse(" Green "));
+        assertEquals(OptionalInt.of(0x00F482), MarkerColorParser.parse("green"));
+        assertEquals(OptionalInt.of(0x00F482), MarkerColorParser.parse(" Green "));
         assertEquals(OptionalInt.of(0x00FF00), MarkerColorParser.parse("#00ff00"));
         assertEquals(OptionalInt.of(0xABCDEF), MarkerColorParser.parse("ABCDEF"));
     }

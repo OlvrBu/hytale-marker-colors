@@ -8,20 +8,19 @@ import java.util.OptionalInt;
 /** Parses a color given by name ("green") or hex ("#00ff00", "00FF00") into 0xRRGGBB. Game-independent. */
 public final class MarkerColorParser {
 
-    /** Named colors offered to players, in the order they're listed in help text. */
+    /**
+     * Named colors offered to players, in menu order. Same palette as the vanilla placeable map markers (0.7.2):
+     * the client doesn't send its palette, so the values were read from markers placed in each color.
+     */
     public static final Map<String, Integer> NAMED = new LinkedHashMap<>();
 
     static {
-        NAMED.put("red", 0xFF4040);
-        NAMED.put("orange", 0xFF9020);
-        NAMED.put("yellow", 0xFFE030);
-        NAMED.put("green", 0x40E040);
-        NAMED.put("cyan", 0x40E0E0);
-        NAMED.put("blue", 0x4070FF);
-        NAMED.put("purple", 0xB050FF);
-        NAMED.put("pink", 0xFF70C0);
         NAMED.put("white", 0xFFFFFF);
-        NAMED.put("black", 0x202020);
+        NAMED.put("pink", 0xFF1399);
+        NAMED.put("orange", 0xFF7512);
+        NAMED.put("yellow", 0xECE133);
+        NAMED.put("green", 0x00F482);
+        NAMED.put("blue", 0x1880FF);
     }
 
     private MarkerColorParser() {

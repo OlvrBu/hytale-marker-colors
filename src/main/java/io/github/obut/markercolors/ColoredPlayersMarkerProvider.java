@@ -3,6 +3,7 @@ package io.github.obut.markercolors;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.math.vector.Transform;
 import com.hypixel.hytale.protocol.Color;
+import com.hypixel.hytale.protocol.packets.worldmap.ContextMenuItem;
 import com.hypixel.hytale.protocol.packets.worldmap.HeightDeltaIconComponent;
 import com.hypixel.hytale.protocol.packets.worldmap.MapMarker;
 import com.hypixel.hytale.protocol.packets.worldmap.PlayerMarkerComponent;
@@ -29,6 +30,7 @@ import java.util.function.Predicate;
  * {@code update} once per viewing player, so each viewer gets their own colors. The marker feeds both the
  * world map and the compass.
  * <p>
+ * Each marker gets a right-click menu entry per palette color, which runs {@code /markercolor} for the viewer.
  * Also shows the test {@link DummyPlayer} when placed.
  * <p>
  * Re-sync with vanilla {@code OtherPlayersMarkerProvider} after game updates.
@@ -87,11 +89,21 @@ public class ColoredPlayersMarkerProvider implements WorldMapManager.MarkerProvi
                         playersMapConfig.getAboveIcon(),
                         playersMapConfig.getIconSwapHeightDelta(),
                         playersMapConfig.getBelowIcon()));
+        // Right-click menu on the map marker. The client runs the command as the viewer; it must have no
+        // leading "/" (confirmed in game 2026-10-22).
+        for (String colorName : MarkerColorParser.NAMED.keySet()) {
+            builder.withContextMenuItem(new ContextMenuItem("Color: " + capitalize(colorName), "markercolor " + name + " " + colorName));
+        }
+        builder.withContextMenuItem(new ContextMenuItem("Color: Default", "markercolor " + name + " reset"));
         Integer rgb = colors.get(viewer.getUuid(), uuid);
         if (rgb != null) {
             builder.withComponent(new TintComponent(toProtocolColor(rgb)));
         }
         return builder.build();
+    }
+
+    private static String capitalize(String s) {
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
     private static Color toProtocolColor(int rgb) {

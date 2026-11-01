@@ -70,11 +70,11 @@ The Hytale API is young, changes between Early Access updates, and is not well r
 - **(2026-10-22)** The palette entry `#FF1399` is named "purple" (owner's choice), although it looks pink.
 - **(2026-10-22)** Players choose colors from the map UI, using the same palette the vanilla placeable map markers offer. Built as context menu entries on player markers.
 
-### Status (as of 2026-10-22): feature complete, version 1.0.0 (tag `v1.0.0`)
+### Status (as of 2026-11-01): feature complete, version 1.1.0 (tag `v1.1.0`)
 
 Everything above confirmed in game by the owner: tint on map and compass (incl. above/below icons), right-click menu, palette, saving across restarts. Online-only targets are fine (decided). The 1.0.0 jar went to the owner's real server.
 
-- **Unreleased on `main` (2026-11-01):** package/group rename to `olvrbu` (mod ID `olvrbu:markercolors`, data folder `mods/olvrbu_markercolors/`; the command's permission is set in code with `setPermissionGroups`, so no permission nodes to migrate), and the move to Hytale **0.7.5** (`hytale_version`/`server_version`, manifest `>=0.7.5 <0.8.0`), because Hytale removed 0.7.2 from its Maven repo (GitHub CI couldn't build it). Compiles and passes the unit tests against 0.7.5; the vanilla code this mod depends on is unchanged (see above). Not tested in game on 0.7.5. Changelog entry under `## Unreleased`.
+- **1.1.0 (2026-11-01):** package/group rename to `olvrbu` (mod ID `olvrbu:markercolors`, data folder `mods/olvrbu_markercolors/`; the command's permission is set in code with `setPermissionGroups`, so no permission nodes to migrate), and the move to Hytale **0.7.5** (`hytale_version`/`server_version`, manifest `>=0.7.5 <0.8.0`), because Hytale removed 0.7.2 from its Maven repo (GitHub CI couldn't build it). Compiles and passes the unit tests against 0.7.5; the vanilla code this mod depends on is unchanged (see above). **Released without an in-game test on 0.7.5** (owner's choice, 2026-11-01). First release built by `release.yml`.
 
 **Releasing (since 2026-11-01):** every release gets a short, player-facing `CHANGELOG.md` section (file added 2026-11-01, 1.0.0 entry written then). Bump `version`, `./gradlew updatePluginManifest`, give the changelog section its heading (`## <version> (<date>)`), commit, tag `v<version>`, push the tag. `.github/workflows/release.yml` (same as the other mods) builds the jar on GitHub and publishes a GitHub Release with it. v1.0.0 targets 0.7.2, which GitHub can't download anymore, so its release jar was built in the sandbox and uploaded with `gh release create`.
 

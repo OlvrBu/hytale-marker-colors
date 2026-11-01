@@ -1,5 +1,5 @@
 {
-    "Group": "obut",
+    "Group": "olvrbu",
     "Name": "markercolors",
     "Version": "1.0.0",
     "Description": "Choose the compass and map marker color of other players",
@@ -18,7 +18,7 @@
         
     },
     "ServerVersion": ">=0.7.2 <0.8.0",
-    "Main": "io.github.obut.markercolors.MarkerColorsPlugin",
+    "Main": "io.github.olvrbu.markercolors.MarkerColorsPlugin",
     "UpdateChecker": {
         "CurseForge": ""
     }

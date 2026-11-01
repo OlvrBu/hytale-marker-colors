@@ -1,4 +1,4 @@
-package io.github.obut.markercolors;
+package io.github.olvrbu.markercolors;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;

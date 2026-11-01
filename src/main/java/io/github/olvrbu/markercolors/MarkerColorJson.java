@@ -1,4 +1,4 @@
-package io.github.obut.markercolors;
+package io.github.olvrbu.markercolors;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;

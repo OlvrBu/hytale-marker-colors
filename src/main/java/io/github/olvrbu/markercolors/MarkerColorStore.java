@@ -1,4 +1,4 @@
-package io.github.obut.markercolors;
+package io.github.olvrbu.markercolors;
 
 import java.util.HashMap;
 import java.util.Map;

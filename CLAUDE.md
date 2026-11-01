@@ -2,7 +2,7 @@
 
 ## What this project is
 
-A Hytale (Early Access, 0.7.x) server plugin that extends the compass and world map. Name: "Marker Colors" (mod ID `markercolors`, package `io.github.obut.markercolors`, main class `MarkerColorsPlugin`). The name is a placeholder the owner may change.
+A Hytale (Early Access, 0.7.x) server plugin that extends the compass and world map. Name: "Marker Colors" (mod ID `markercolors`, package `io.github.olvrbu.markercolors`, main class `MarkerColorsPlugin`). The name is a placeholder the owner may change.
 
 **Goal:** each player chooses the color of other players' compass and map markers, for themselves only. Example: players A, B, C; A sees B in green and C in red, while B and C still see the defaults (or their own choices).
 

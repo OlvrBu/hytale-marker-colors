@@ -43,7 +43,7 @@ The Hytale API is young, changes between Early Access updates, and is not well r
 - When a community guide and the server JAR disagree, the JAR wins.
 - Useful references: https://hytalemodding.dev/en/docs, https://github.com/AzureDoom/Hytale-Gradle-Plugin
 
-## How player markers work (server 0.7.2, from decompiled sources)
+## How player markers work (server 0.7.2, from decompiled sources; identical in 0.7.5)
 
 - Each world's `WorldMapManager` holds named `MarkerProvider`s (`getMarkerProviders()`, `addMarkerProvider(key, provider)`, a plain map, so adding under an existing key replaces it). Vanilla registers `OtherPlayersMarkerProvider` as `"playerIcons"` in the `WorldMapManager` constructor.
 - `MarkerProvider.update(World, Player viewer, MarkersCollector)` is called **per viewing player**, so markers can differ per viewer. Vanilla builds one `MapMarker` per other player: id `"Player-<uuid>"`, image `"Player.png"`, name = username, plus `PlayerMarkerComponent` and `HeightDeltaIconComponent` (above/below icons `PlayerAbove.png`/`PlayerBelow.png` from the gameplay config), added with `addIgnoreViewDistance`.
@@ -52,11 +52,11 @@ The Hytale API is young, changes between Early Access updates, and is not well r
 - **Confirmed in game 2026-10-22:** the `TintComponent` colors the player marker on both the map and the compass, including the above/below icons. No recolored icons needed.
 - A `MapMarker` can carry `ContextMenuItem(name, command)` entries. The server itself never uses them. **Confirmed in game 2026-10-22:** they show on right-click on the map; clicking runs the command as the viewer and shows its chat feedback. The command must have **no leading `/`** (the variant with a slash did not work for the owner). The map UI itself is client-side and not in the assets; context menu items are the only server-side hook into it found so far.
 - The user-marker color palette is client-side too (not in assets or server code). A chosen color arrives as `CreateUserMarker.tintColor` and is saved as `ColorTint` on the marker (personal markers: in `universe/players/<uuid>.json`; shared: world resource `SharedUserMapMarkers`). Read on 2026-10-22 from markers the owner placed in all colors (6), ordered by placement position: white `#FFFFFF`, pink `#FF1399` (we call it "purple", owner's choice), orange `#FF7512`, yellow `#ECE133`, green `#00F482`, blue `#1880FF`. **Names are ours, not the game's.**
-- Icons: `Common/UI/WorldMap/MapMarkers/` in the assets zip (`~/.gradle/caches/hytale-assets/release-0.7.2-Assets.zip`).
+- Icons: `Common/UI/WorldMap/MapMarkers/` in the assets zip (`~/.gradle/caches/hytale-assets/release-0.7.5-Assets.zip`).
 
 ## Current implementation (2026-10-22)
 
-- `ColoredPlayersMarkerProvider`: copy of vanilla `OtherPlayersMarkerProvider` plus a `TintComponent` when the viewer chose a color. Registered under `"playerIcons"` on `AddWorldEvent` (the way built-in plugins add providers). **Re-sync with vanilla after game updates.**
+- `ColoredPlayersMarkerProvider`: copy of vanilla `OtherPlayersMarkerProvider` plus a `TintComponent` when the viewer chose a color. Registered under `"playerIcons"` on `AddWorldEvent` (the way built-in plugins add providers). **Re-sync with vanilla after game updates.** Checked 2026-11-01: `OtherPlayersMarkerProvider`, `WorldMapManager` (incl. the `"playerIcons"` registration), `MapMarker`, `ContextMenuItem`, `TintComponent`, `MarkersCollector`, `AddWorldEvent` and `Player.getPlayerRef()` are unchanged from 0.7.2 to 0.7.5 (decompiled sources compared), so no re-sync was needed.
 - `MarkerColorStore`: viewer UUID → target UUID → 0xRRGGBB, in memory; notifies a listener on every change.
 - Saving (2026-10-22): `MarkerColorFile` writes all colors to `marker_colors.json` in the plugin data folder after every change (temp file + atomic move) and loads it in `setup()`. Format (`MarkerColorJson`, unit-tested): `{ "viewer-uuid": { "target-uuid": "#RRGGBB" } }`; colors are stored as hex, never names, so renaming palette entries can't break saved files. Malformed entries are skipped with a warning; an unreadable file is moved to `marker_colors.json.broken-<millis>` and the plugin starts empty. On the dev server the file lands in `src/main/resources` (gitignored, excluded from the jar).
 - Right-click menu on every other-player marker on the map: "Color: White" … "Color: Blue" (the vanilla palette) and "Color: Default"; each runs `/markercolor <name> <color>`.
@@ -73,6 +73,10 @@ The Hytale API is young, changes between Early Access updates, and is not well r
 ### Status (as of 2026-10-22): feature complete, version 1.0.0 (tag `v1.0.0`)
 
 Everything above confirmed in game by the owner: tint on map and compass (incl. above/below icons), right-click menu, palette, saving across restarts. Online-only targets are fine (decided). The 1.0.0 jar went to the owner's real server.
+
+- **Unreleased on `main` (2026-11-01):** package/group rename to `olvrbu` (mod ID `olvrbu:markercolors`, data folder `mods/olvrbu_markercolors/`; the command's permission is set in code with `setPermissionGroups`, so no permission nodes to migrate), and the move to Hytale **0.7.5** (`hytale_version`/`server_version`, manifest `>=0.7.5 <0.8.0`), because Hytale removed 0.7.2 from its Maven repo (GitHub CI couldn't build it). Compiles and passes the unit tests against 0.7.5; the vanilla code this mod depends on is unchanged (see above). Not tested in game on 0.7.5. Changelog entry under `## Unreleased`.
+
+**Releasing (since 2026-11-01):** every release gets a short, player-facing `CHANGELOG.md` section (file added 2026-11-01, 1.0.0 entry written then). Bump `version`, `./gradlew updatePluginManifest`, give the changelog section its heading (`## <version> (<date>)`), commit, tag `v<version>`, push the tag. `.github/workflows/release.yml` (same as the other mods) builds the jar on GitHub and publishes a GitHub Release with it. v1.0.0 targets 0.7.2, which GitHub can't download anymore, so its release jar was built in the sandbox and uploaded with `gh release create`.
 
 ## Open design questions (ask the owner)
 
